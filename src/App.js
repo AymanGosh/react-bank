@@ -19,6 +19,16 @@ class App extends Component {
       balance: 0,
     };
   }
+  deposit = (amount, vendor, category) => {
+    let newTransaction = { amount, vendor, category };
+    let currDummyData = [...this.state.dummyData];
+    currDummyData.push(newTransaction);
+    this.setState({ dummyData: currDummyData });
+    let newBalance = this.state.balance + amount;
+    this.setState({ balance: newBalance });
+  };
+
+  // withdraw = (amount, vendor, category) => {};
   render() {
     return (
       <div>
@@ -34,7 +44,17 @@ class App extends Component {
                 <Transactions key={1} dummyData={this.state.dummyData} />
               )}
             />
-            <Route path="/Operations" exact render={() => <Operations />} />
+            <Route
+              path="/Operations"
+              exact
+              render={() => (
+                <Operations
+                  key={2}
+                  deposit={this.deposit}
+                  // withdraw={this.withdraw}
+                />
+              )}
+            />
           </div>
         </Router>
       </div>
