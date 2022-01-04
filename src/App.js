@@ -11,10 +11,10 @@ class App extends Component {
     super();
     this.state = {
       dummyData: [
-        { amount: 3200, vendor: "Elevation", category: "Salary" },
-        { amount: -7, vendor: "Runescape", category: "Entertainment" },
-        { amount: -20, vendor: "Subway", category: "Food" },
-        { amount: -98, vendor: "La Baguetterie", category: "Food" },
+        { id: 1, amount: 3200, vendor: "Elevation", category: "Salary" },
+        { id: 2, amount: -7, vendor: "Runescape", category: "Entertainment" },
+        { id: 3, amount: -20, vendor: "Subway", category: "Food" },
+        { id: 4, amount: -98, vendor: "La Baguetterie", category: "Food" },
       ],
       balance: 0,
     };
@@ -26,6 +26,13 @@ class App extends Component {
     this.setState({ dummyData: currDummyData });
     let newBalance = this.state.balance + amount;
     this.setState({ balance: newBalance });
+  };
+
+  handelDelete = (id) => {
+    let currDummyData = [...this.state.dummyData];
+    const index = currDummyData.findIndex((currD) => currD.id === id);
+    if (index !== -1) currDummyData.splice(index, 1);
+    this.setState({ dummyData: currDummyData });
   };
 
   // withdraw = (amount, vendor, category) => {};
@@ -41,7 +48,11 @@ class App extends Component {
               path="/"
               exact
               render={() => (
-                <Transactions key={1} dummyData={this.state.dummyData} />
+                <Transactions
+                  key={1}
+                  handelDelete={this.handelDelete}
+                  dummyData={this.state.dummyData}
+                />
               )}
             />
             <Route

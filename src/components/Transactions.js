@@ -6,7 +6,11 @@ export default class Transactions extends Component {
     return (
       <div>
         {this.props.dummyData.map((d) => (
-          <Transaction key={d.vendor} dummyData={d} />
+          <Transaction
+            key={d.vendor}
+            dummyData={d}
+            handelDelete={this.props.handelDelete}
+          />
         ))}
       </div>
     );
