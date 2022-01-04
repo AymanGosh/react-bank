@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/", api);
 
-const port = 4200;
+const port = 8888;
 app.listen(port, function () {
   console.log(`Running server on port ${port}`);
 });

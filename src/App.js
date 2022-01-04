@@ -21,7 +21,7 @@ class App extends Component {
     };
   }
   async getTransactions() {
-    return axios.get("http://localhost:4200/transactions");
+    return axios.get("http://localhost:8888/transactions");
   }
   async componentDidMount() {
     const response = await this.getTransactions();
@@ -30,7 +30,7 @@ class App extends Component {
   }
 
   async removeTransactionFromDB(id) {
-    await axios.delete(`http://localhost:4200/transaction/${id}`);
+    await axios.delete(`http://localhost:8888/transaction/${id}`);
   }
   handelDelete = (id) => {
     let currDummyData = [...this.state.dummyData];
@@ -43,7 +43,7 @@ class App extends Component {
   makeTransaction = async (amount, vendor, category) => {
     const transaction = { amount, vendor, category };
     const response = await axios.post(
-      "http://localhost:4200/transaction",
+      "http://localhost:8888/transaction",
       transaction
     );
     let newCurrId = this.state.currId + 1;
