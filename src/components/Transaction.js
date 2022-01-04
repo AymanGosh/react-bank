@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class Transaction extends Component {
   handelDelete = () => {
-    this.props.handelDelete(this.props.dummyData.id);
+    this.props.handelDelete(this.props.dummyData._id);
   };
 
   render() {

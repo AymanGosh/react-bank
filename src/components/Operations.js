@@ -16,7 +16,7 @@ export default class Operations extends Component {
   };
 
   deposit = () => {
-    this.props.deposit(
+    this.props.makeTransaction(
       parseInt(this.state.amount),
       this.state.vendor,
       this.state.category
@@ -24,7 +24,7 @@ export default class Operations extends Component {
   };
 
   withdraw = () => {
-    this.props.deposit(
+    this.props.makeTransaction(
       parseInt(this.state.amount) * -1,
       this.state.vendor,
       this.state.category

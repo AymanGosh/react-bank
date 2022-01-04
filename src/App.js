@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Transactions from "./components/Transactions";
 
 import Operations from "./components/Operations";
-
+import axios from "axios";
 import React, { Component } from "react";
 
 class App extends Component {
@@ -11,34 +11,50 @@ class App extends Component {
     super();
     this.state = {
       dummyData: [
-        { id: 1, amount: 3200, vendor: "Elevation", category: "Salary" },
-        { id: 2, amount: -7, vendor: "Runescape", category: "Entertainment" },
-        { id: 3, amount: -20, vendor: "Subway", category: "Food" },
-        { id: 4, amount: -98, vendor: "La Baguetterie", category: "Food" },
+        { _id: 1, amount: 3200, vendor: "Elevation", category: "Salary" },
+        { _id: 2, amount: -7, vendor: "Runescape", category: "Entertainment" },
+        { _id: 3, amount: -20, vendor: "Subway", category: "Food" },
+        { _id: 4, amount: -98, vendor: "La Baguetterie", category: "Food" },
       ],
       balance: 0,
       currId: 5,
     };
   }
-  deposit = (amount, vendor, category) => {
-    let newCurrId = this.state.currId + 1;
-    let newTransaction = { newCurrId, amount, vendor, category };
+  async getTransactions() {
+    return axios.get("http://localhost:4200/transactions");
+  }
+  async componentDidMount() {
+    const response = await this.getTransactions();
+    this.setState({ dummyData: response.data });
+    console.log(response.data);
+  }
+
+  async removeTransactionFromDB(id) {
+    await axios.delete(`http://localhost:4200/transaction/${id}`);
+  }
+  handelDelete = (id) => {
     let currDummyData = [...this.state.dummyData];
-    currDummyData.push(newTransaction);
+    const index = currDummyData.findIndex((currD) => currD._id === id);
+    if (index !== -1) currDummyData.splice(index, 1);
+    this.setState({ dummyData: currDummyData });
+    this.removeTransactionFromDB(id);
+  };
+
+  makeTransaction = async (amount, vendor, category) => {
+    const transaction = { amount, vendor, category };
+    const response = await axios.post(
+      "http://localhost:4200/transaction",
+      transaction
+    );
+    let newCurrId = this.state.currId + 1;
+    let currDummyData = [...this.state.dummyData];
+    currDummyData.push(response.data);
     this.setState({ currId: newCurrId });
     this.setState({ dummyData: currDummyData });
     let newBalance = this.state.balance + amount;
     this.setState({ balance: newBalance });
   };
 
-  handelDelete = (id) => {
-    let currDummyData = [...this.state.dummyData];
-    const index = currDummyData.findIndex((currD) => currD.id === id);
-    if (index !== -1) currDummyData.splice(index, 1);
-    this.setState({ dummyData: currDummyData });
-  };
-
-  // withdraw = (amount, vendor, category) => {};
   render() {
     return (
       <div>
@@ -64,8 +80,7 @@ class App extends Component {
               render={() => (
                 <Operations
                   key={"Operations"}
-                  deposit={this.deposit}
-                  // withdraw={this.withdraw}
+                  makeTransaction={this.makeTransaction}
                 />
               )}
             />
