@@ -20,24 +20,19 @@ class App extends Component {
       currId: 5,
     };
   }
-  async getTransactions() {
-    return axios.get("http://localhost:8888/transactions");
-  }
+
   async componentDidMount() {
-    const response = await this.getTransactions();
+    const response = await axios.get("http://localhost:8888/transactions");
     this.setState({ dummyData: response.data });
-    console.log(response.data);
   }
 
-  async removeTransactionFromDB(id) {
-    await axios.delete(`http://localhost:8888/transaction/${id}`);
-  }
-  handelDelete = (id) => {
+  handelDelete = async (id) => {
     let currDummyData = [...this.state.dummyData];
     const index = currDummyData.findIndex((currD) => currD._id === id);
     if (index !== -1) currDummyData.splice(index, 1);
     this.setState({ dummyData: currDummyData });
-    this.removeTransactionFromDB(id);
+
+    await axios.delete(`http://localhost:8888/transaction/${id}`);
   };
 
   makeTransaction = async (amount, vendor, category) => {
