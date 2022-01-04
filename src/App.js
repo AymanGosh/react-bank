@@ -17,12 +17,15 @@ class App extends Component {
         { id: 4, amount: -98, vendor: "La Baguetterie", category: "Food" },
       ],
       balance: 0,
+      currId: 5,
     };
   }
   deposit = (amount, vendor, category) => {
-    let newTransaction = { amount, vendor, category };
+    let newCurrId = this.state.currId + 1;
+    let newTransaction = { newCurrId, amount, vendor, category };
     let currDummyData = [...this.state.dummyData];
     currDummyData.push(newTransaction);
+    this.setState({ currId: newCurrId });
     this.setState({ dummyData: currDummyData });
     let newBalance = this.state.balance + amount;
     this.setState({ balance: newBalance });
@@ -49,7 +52,7 @@ class App extends Component {
               exact
               render={() => (
                 <Transactions
-                  key={1}
+                  key={"Transactions"}
                   handelDelete={this.handelDelete}
                   dummyData={this.state.dummyData}
                 />
@@ -60,7 +63,7 @@ class App extends Component {
               exact
               render={() => (
                 <Operations
-                  key={2}
+                  key={"Operations"}
                   deposit={this.deposit}
                   // withdraw={this.withdraw}
                 />
