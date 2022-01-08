@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 export default class Operations extends Component {
   constructor() {
@@ -7,6 +8,7 @@ export default class Operations extends Component {
       amount: "",
       vendor: "",
       category: "",
+      isRedirect: false,
     };
   }
   handleChange = (e) => {
@@ -21,6 +23,7 @@ export default class Operations extends Component {
       this.state.vendor,
       this.state.category
     );
+    this.setState({ isRedirect: true });
   };
 
   withdraw = () => {
@@ -29,6 +32,7 @@ export default class Operations extends Component {
       this.state.vendor,
       this.state.category
     );
+    this.setState({ isRedirect: true });
   };
   render() {
     return (
@@ -64,6 +68,7 @@ export default class Operations extends Component {
         <button type="button" onClick={this.withdraw}>
           Withdraw
         </button>
+        {this.state.isRedirect ? <Redirect to="/" /> : ""}
       </form>
     );
   }

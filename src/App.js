@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Transactions from "./components/Transactions";
 
 import Operations from "./components/Operations";
@@ -38,16 +39,15 @@ class App extends Component {
   }
 
   handelDelete = async (id) => {
-    let currDummyData = await axios.delete(
+    let response = await axios.delete(
       `http://localhost:8888/transaction/${id}`
     );
-    this.setState({ dummyData: currDummyData });
-    this.getMyBalance();
+    let tempData = this.state.dummyData.filter((d) => d._id != id);
+    this.setState({ dummyData: tempData });
   };
 
   makeTransaction = async (amount, vendor, category) => {
     const transaction = { amount, vendor, category };
-    console.log(transaction);
     const response = await axios.post(
       "http://localhost:8888/transaction",
       transaction
