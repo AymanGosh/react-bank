@@ -24,7 +24,6 @@ export default class Category extends Component {
   }
   render() {
     this.sumOfTransactionsByCategory();
-    console.log(this.sumTransByCateg);
 
     return (
       <div>
