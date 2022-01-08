@@ -1,22 +1,18 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import Transactions from "./components/Transactions";
-
-import Operations from "./components/Operations";
 import axios from "axios";
 import React, { Component } from "react";
+import Transactions from "./components/Transactions";
+import Operations from "./components/Operations";
+import Category from "./components/Category";
+import Balance from "./components/Balance";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      dummyData: [
-        { _id: 1, amount: 3200, vendor: "Elevation", category: "Salary" },
-        { _id: 2, amount: -7, vendor: "Runescape", category: "Entertainment" },
-        { _id: 3, amount: -20, vendor: "Subway", category: "Food" },
-        { _id: 4, amount: -98, vendor: "La Baguetterie", category: "Food" },
-      ],
+      dummyData: [],
       balance: 0,
     };
   }
@@ -44,6 +40,7 @@ class App extends Component {
     );
     let tempData = this.state.dummyData.filter((d) => d._id != id);
     this.setState({ dummyData: tempData });
+    this.getMyBalance();
   };
 
   makeTransaction = async (amount, vendor, category) => {
@@ -65,7 +62,9 @@ class App extends Component {
           <div>
             <Link to="/">Transactions </Link>
             <Link to="/Operations"> Operations</Link>
-            <p> Balance : {this.state.balance}</p>
+            <Link to="/Category"> Category</Link>
+            <Balance balance={this.state.balance} />
+
             <Route
               path="/"
               exact
@@ -85,6 +84,13 @@ class App extends Component {
                   key={"Operations"}
                   makeTransaction={this.makeTransaction}
                 />
+              )}
+            />
+            <Route
+              path="/Category"
+              exact
+              render={() => (
+                <Category key={"Category"} dummyData={this.state.dummyData} />
               )}
             />
           </div>
