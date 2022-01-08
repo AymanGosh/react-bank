@@ -17,37 +17,45 @@ class App extends Component {
         { _id: 4, amount: -98, vendor: "La Baguetterie", category: "Food" },
       ],
       balance: 0,
-      currId: 5,
     };
   }
 
-  async componentDidMount() {
+  async getDataFromDB() {
     const response = await axios.get("http://localhost:8888/transactions");
     this.setState({ dummyData: response.data });
+    this.getMyBalance();
+  }
+  getMyBalance() {
+    let sumAmount = 0;
+    for (let i = 0; i < this.state.dummyData.length; i++) {
+      sumAmount += this.state.dummyData[i].amount;
+    }
+    this.setState({ balance: sumAmount });
+  }
+
+  async componentDidMount() {
+    this.getDataFromDB();
   }
 
   handelDelete = async (id) => {
-    let currDummyData = [...this.state.dummyData];
-    const index = currDummyData.findIndex((currD) => currD._id === id);
-    if (index !== -1) currDummyData.splice(index, 1);
+    let currDummyData = await axios.delete(
+      `http://localhost:8888/transaction/${id}`
+    );
     this.setState({ dummyData: currDummyData });
-
-    await axios.delete(`http://localhost:8888/transaction/${id}`);
+    this.getMyBalance();
   };
 
   makeTransaction = async (amount, vendor, category) => {
     const transaction = { amount, vendor, category };
+    console.log(transaction);
     const response = await axios.post(
       "http://localhost:8888/transaction",
       transaction
     );
-    let newCurrId = this.state.currId + 1;
     let currDummyData = [...this.state.dummyData];
     currDummyData.push(response.data);
-    this.setState({ currId: newCurrId });
     this.setState({ dummyData: currDummyData });
-    let newBalance = this.state.balance + amount;
-    this.setState({ balance: newBalance });
+    this.getMyBalance();
   };
 
   render() {
