@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+Client Side
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Transcations component load a Transaction component for each  transactions. 
 
-## Available Scripts
+Each Transaction component display the relevant data as well as a delete transaction button/icon.
 
-In the project directory, you can run:
+The App component (before rendering Transactions) display the total Balance - i.e. the sum of the data’s amounts.
 
-### `npm start`
+Next, the Operations component have three inputs:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Amount
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Vendor
 
-### `npm test`
+Category
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Under these inputs there two buttons:
+Deposit
 
-### `npm run build`
+Withdraw
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Pressing the Deposit button push a transcation into user transactions array with a positive value in the amount field.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Pressing the Withdraw button should push a transcation into user transactions array with a negative value in the amount field.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+*the user is simply inserting a number - they do not need to write out whether it is positive or negative.
 
-### `npm run eject`
+Finally, pressing the delete button in a transaction delete that transaction from user transactions array.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Server side
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+there are three routes in server:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+/transactions - a GET route that returns all of the transaction documents
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+/transaction - a POST route that saves a single transaction into user DB
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+/transaction - a DELETE route that deletes a single transaction in user DB
